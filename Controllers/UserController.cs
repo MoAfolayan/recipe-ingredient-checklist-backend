@@ -23,7 +23,7 @@ namespace recipe_ingredient_checklist_backend.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public Users User(int id)
+        public Users Users(int id)
         {
             return _dbContext.Users.Find(id);
         }

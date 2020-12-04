@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.EntityFrameworkCore;
 using recipe_ingredient_checklist_backend.Data.Models;
 
 namespace recipe_ingredient_checklist_backend
@@ -27,7 +28,7 @@ namespace recipe_ingredient_checklist_backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<RecipeDBContext>(options => options.UseSqlServer("Server=localhost;Database=RecipeDB;User Id=SA;Password=zaEEQsYtJBtP5PWD;"));
+            services.AddDbContext<RecipeDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
         }
 

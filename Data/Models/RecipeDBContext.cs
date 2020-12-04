@@ -1,18 +1,22 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace recipe_ingredient_checklist_backend.Data.Models
 {
     public partial class RecipeDBContext : DbContext
     {
-        public RecipeDBContext()
+        IConfiguration _configuration;
+        public RecipeDBContext(IConfiguration configuration)
         {
+            _configuration = configuration;
         }
 
-        public RecipeDBContext(DbContextOptions<RecipeDBContext> options)
+        public RecipeDBContext(DbContextOptions<RecipeDBContext> options, IConfiguration configuration)
             : base(options)
         {
+            _configuration = configuration;
         }
 
         public virtual DbSet<Ingredient> Ingredient { get; set; }
@@ -23,8 +27,7 @@ namespace recipe_ingredient_checklist_backend.Data.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=localhost;Database=RecipeDB;User Id=SA;Password=zaEEQsYtJBtP5PWD;");
+                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
             }
         }
 
