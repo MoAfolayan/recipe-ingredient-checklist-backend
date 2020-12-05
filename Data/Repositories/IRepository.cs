@@ -8,9 +8,9 @@ namespace recipe_ingredient_checklist_backend.Data.Repositories
     {
         T Add(T entity);
         T Update(T entity);
-        T Get(string id);
+        T Find(string id);
         IEnumerable<T> All();
-        IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
+        IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
         void SaveChanges();
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using recipe_ingredient_checklist_backend.Services;
 using recipe_ingredient_checklist_backend.Data;
+using recipe_ingredient_checklist_backend.ViewModels;
 
 namespace recipe_ingredient_checklist_backend.Controllers
 {
@@ -24,11 +25,10 @@ namespace recipe_ingredient_checklist_backend.Controllers
             _applicationUserService = applicationUserService;
         }
 
-        [HttpGet]
-        [Route("{userId}")]
-        public ApplicationUser Get(string userId)
+        [HttpPost]
+        public ApplicationUser Post([FromBody] UsernameModel loginModel)
         {
-            return _applicationUserService.GetUserById(userId);
+            return _applicationUserService.GetUserByUsername(loginModel.Username);
         }
     }
 }

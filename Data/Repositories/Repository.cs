@@ -19,12 +19,12 @@ namespace recipe_ingredient_checklist_backend.Data.Repositories
             return _context.Add(entity).Entity;
         }
 
-        public virtual IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
+        public virtual IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
         {
             return _context.Set<T>().AsQueryable().Where(predicate).ToList();
         }
 
-        public virtual T Get(string id)
+        public virtual T Find(string id)
         {
             return _context.Find<T>(id);
         }

@@ -8,6 +8,6 @@ namespace recipe_ingredient_checklist_backend.Services
 {
     public interface IApplicationUserService
     {
-        ApplicationUser GetUserById(string id);
+        ApplicationUser GetUserByUsername(string id);
     }
 }

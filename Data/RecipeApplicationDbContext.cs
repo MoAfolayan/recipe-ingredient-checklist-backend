@@ -22,6 +22,14 @@ namespace recipe_ingredient_checklist_backend.Data
                 .WithOne(recipe => recipe.ApplicationUser)
                 .IsRequired();
 
+            builder.Entity<ApplicationUser>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            builder.Entity<ApplicationUser>()
+                .HasIndex(u => u.UserName)
+                .IsUnique();
+
             // Recipe-Ingredient many-many relationship
             builder.Entity<RecipeIngredient>()
                 .HasKey(recipeIngredient => new { recipeIngredient.RecipeId, recipeIngredient.IngredientId });  

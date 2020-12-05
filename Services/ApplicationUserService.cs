@@ -16,9 +16,11 @@ namespace recipe_ingredient_checklist_backend.Services
             _unitOfWork = unitOfWork;
         }
 
-        public ApplicationUser GetUserById(string id)
+        public ApplicationUser GetUserByUsername(string username)
         {
-            return _unitOfWork.ApplicationUserRepository.Get(id);
+            return _unitOfWork.ApplicationUserRepository
+                .Get(ApplicationUser => ApplicationUser.UserName == username)
+                .FirstOrDefault();
         }
     }
 }
