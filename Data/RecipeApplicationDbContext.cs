@@ -34,7 +34,6 @@ namespace recipe_ingredient_checklist_backend.Data
                 .HasIndex(u => u.UserName)
                 .IsUnique();
 
-            // Recipe-Ingredient many-many relationship
             builder.Entity<RecipeIngredient>()
                 .HasKey(recipeIngredient => new { recipeIngredient.RecipeId, recipeIngredient.IngredientId });  
 
@@ -52,6 +51,10 @@ namespace recipe_ingredient_checklist_backend.Data
                 .HasOne(checkList => checkList.Recipe)
                 .WithMany(recipe => recipe.CheckLists)
                 .HasForeignKey(checkList => checkList.RecipeId);
+
+            builder.Entity<CheckList>()
+                .Property(p => p.IsActive)
+                .HasDefaultValue(true);
 
             builder.Entity<CheckListItem>()
                 .HasOne(checkListItem => checkListItem.CheckList)

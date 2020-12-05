@@ -16,7 +16,7 @@ namespace recipe_ingredient_checklist_backend.Services
             _unitOfWork = unitOfWork;
         }
 
-        public List<CheckList> FindActiveCheckListWithCheckListItems(int recipeId)
+        public CheckList FindActiveCheckListWithCheckListItems(int recipeId)
         {
             return _unitOfWork.CheckListRepository.FindActiveCheckListWithCheckListItems(recipeId);
         }
@@ -33,6 +33,13 @@ namespace recipe_ingredient_checklist_backend.Services
 
                 result = true;
             }
+            return result;
+        }
+
+        public CheckList Add(CheckList checkList)
+        {
+            var result = _unitOfWork.CheckListRepository.Add(checkList);
+            _unitOfWork.SaveChanges();
             return result;
         }
     }

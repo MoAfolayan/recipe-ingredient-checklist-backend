@@ -6,6 +6,6 @@ namespace recipe_ingredient_checklist_backend.Data.Repositories
 {
     public interface ICheckListRepository : IRepository<CheckList>
     {
-        List<CheckList> FindActiveCheckListWithCheckListItems(int recipeId);
+        CheckList FindActiveCheckListWithCheckListItems(int recipeId);
     }
 }

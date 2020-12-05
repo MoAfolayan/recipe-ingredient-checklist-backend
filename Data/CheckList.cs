@@ -16,7 +16,6 @@ namespace recipe_ingredient_checklist_backend.Data
         [Required]
         public bool IsActive { get; set; }
 
-        [Required]
         public Recipe Recipe { get; set; }
 
         public ICollection<CheckListItem> CheckListItems { get; set; }

@@ -28,7 +28,7 @@ namespace recipe_ingredient_checklist_backend.Controllers
 
         [HttpGet]
         [Route("{recipeId}")]
-        public List<CheckList> Get(int recipeId)
+        public CheckList Get(int recipeId)
         {
             return _checkListService.FindActiveCheckListWithCheckListItems(recipeId);
         }
@@ -46,6 +46,12 @@ namespace recipe_ingredient_checklist_backend.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = "CheckList Id does not exist!" }); 
             }
+        }
+
+        [HttpPut]
+        public CheckList Put(CheckList checkList)
+        {
+            return _checkListService.Add(checkList);
         }
     }
 }
