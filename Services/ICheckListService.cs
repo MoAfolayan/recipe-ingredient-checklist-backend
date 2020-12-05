@@ -9,5 +9,6 @@ namespace recipe_ingredient_checklist_backend.Services
     public interface ICheckListService
     {
         List<CheckList> FindActiveCheckListWithCheckListItems(int recipeId);
+        bool Deactivate(int checkListId);
     }
 }

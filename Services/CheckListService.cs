@@ -20,5 +20,20 @@ namespace recipe_ingredient_checklist_backend.Services
         {
             return _unitOfWork.CheckListRepository.FindActiveCheckListWithCheckListItems(recipeId);
         }
+
+        public bool Deactivate(int checkListId)
+        {
+            var result = false;
+            var checkList = _unitOfWork.CheckListRepository.Get(checkList => checkList.Id == checkListId).FirstOrDefault();
+            if (checkList != null)
+            {
+                checkList.IsActive = false;
+                _unitOfWork.CheckListRepository.Update(checkList);
+                _unitOfWork.SaveChanges();
+
+                result = true;
+            }
+            return result;
+        }
     }
 }
