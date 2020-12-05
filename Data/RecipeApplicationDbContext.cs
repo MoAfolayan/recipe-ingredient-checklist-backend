@@ -10,8 +10,10 @@ namespace recipe_ingredient_checklist_backend.Data
   
         }  
 
+        public virtual DbSet<ApplicationUser> ApplicationUser { get; set; }
         public virtual DbSet<Ingredient> Ingredient { get; set; }
         public virtual DbSet<Recipe> Recipe { get; set; }
+        public virtual DbSet<RecipeIngredient> RecipeIngredient { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)  
         {  

@@ -13,13 +13,13 @@ namespace recipe_ingredient_checklist_backend.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class RecipeController : ControllerBase
+    public class RecipesController : ControllerBase
     {
-        private readonly ILogger<RecipeController> _logger;
+        private readonly ILogger<RecipesController> _logger;
         private readonly IRecipeService _recipeService;
         private readonly IApplicationUserService _applicationUserService;
 
-        public RecipeController(ILogger<RecipeController> logger, 
+        public RecipesController(ILogger<RecipesController> logger, 
             IRecipeService recipeService,
             IApplicationUserService applicationUserService)
         {
@@ -29,7 +29,7 @@ namespace recipe_ingredient_checklist_backend.Controllers
         }
 
         [HttpGet]
-        public List<Recipe> Get()
+        public List<ApplicationUser> Get()
         {
             var applicationUser = _applicationUserService.GetUserByUsername(User.Identity.Name);
             return _recipeService.FindRecipeWithIngredientsByUserId(applicationUser.Id);
