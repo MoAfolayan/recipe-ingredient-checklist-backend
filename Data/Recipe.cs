@@ -20,5 +20,6 @@ namespace recipe_ingredient_checklist_backend.Data
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }
         public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
+        public ICollection<CheckList> CheckLists { get; set; }
     }
 }

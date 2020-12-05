@@ -73,11 +73,14 @@ namespace recipe_ingredient_checklist_backend
             // Services
             services.AddTransient<IApplicationUserService, ApplicationUserService>();
             services.AddTransient<IRecipeService, RecipeService>();
+            services.AddTransient<ICheckListService, CheckListService>();
 
             // Repositories
             services.AddTransient<IRepository<ApplicationUser>, ApplicationUserRepository>();
             services.AddTransient<IRepository<Recipe>, RecipeRepository>();
             services.AddTransient<IRepository<Ingredient>, IngredientRepository>();
+            services.AddTransient<IRepository<CheckList>, CheckListRepository>();
+            services.AddTransient<IRepository<CheckListItem>, CheckListItemRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 

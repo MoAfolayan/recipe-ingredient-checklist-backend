@@ -53,6 +53,20 @@ namespace recipe_ingredient_checklist_backend.Data.UnitOfWork
             }
         }
 
+        private ICheckListRepository _checkListRepository;
+        public ICheckListRepository CheckListRepository
+        {
+            get
+            {
+                if (_checkListRepository == null)
+                {
+                    _checkListRepository = new CheckListRepository(_context);
+                }
+
+                return _checkListRepository;
+            }
+        }
+
         public void SaveChanges()
         {
             _context.SaveChanges();

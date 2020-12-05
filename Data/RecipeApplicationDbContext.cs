@@ -14,6 +14,8 @@ namespace recipe_ingredient_checklist_backend.Data
         public virtual DbSet<Ingredient> Ingredient { get; set; }
         public virtual DbSet<Recipe> Recipe { get; set; }
         public virtual DbSet<RecipeIngredient> RecipeIngredient { get; set; }
+        public virtual DbSet<CheckList> CheckList { get; set; }
+        public virtual DbSet<CheckListItem> CheckListItem { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)  
         {  
@@ -45,6 +47,21 @@ namespace recipe_ingredient_checklist_backend.Data
                 .HasOne(recipeIngredient => recipeIngredient.Ingredient)
                 .WithMany(ingredient => ingredient.RecipeIngredients)
                 .HasForeignKey(recipeIngredient => recipeIngredient.IngredientId);
+
+            builder.Entity<CheckList>()
+                .HasOne(checkList => checkList.Recipe)
+                .WithMany(recipe => recipe.CheckLists)
+                .HasForeignKey(checkList => checkList.RecipeId);
+
+            builder.Entity<CheckListItem>()
+                .HasOne(checkListItem => checkListItem.CheckList)
+                .WithMany(checkList => checkList.CheckListItems)
+                .HasForeignKey(checkListItem => checkListItem.CheckListId);
+
+            builder.Entity<CheckListItem>()
+                .HasOne(checkListItem => checkListItem.Ingredient)
+                .WithMany(ingredient => ingredient.CheckListItems)
+                .HasForeignKey(checkListItem => checkListItem.IngredientId);
         }  
     }  
 }  

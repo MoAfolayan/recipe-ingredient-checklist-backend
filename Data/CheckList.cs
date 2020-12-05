@@ -1,18 +1,24 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace recipe_ingredient_checklist_backend.Data
 {
-    public partial class Ingredient
+    public partial class CheckList
     {
         [Required]
         public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
-        public string Description { get; set; }
 
-        public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
+        [Required]
+        public int RecipeId { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
+
+        [Required]
+        public Recipe Recipe { get; set; }
+
         public ICollection<CheckListItem> CheckListItems { get; set; }
     }
 }

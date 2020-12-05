@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using recipe_ingredient_checklist_backend.Data;
 
 namespace recipe_ingredient_checklist_backend.Migrations
 {
     [DbContext(typeof(RecipeApplicationDbContext))]
-    partial class RecipeApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201205181815_NewTable_CheckList_And_CheckListItem")]
+    partial class NewTable_CheckList_And_CheckListItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

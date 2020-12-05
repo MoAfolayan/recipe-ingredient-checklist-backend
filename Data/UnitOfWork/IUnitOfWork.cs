@@ -7,6 +7,7 @@ namespace recipe_ingredient_checklist_backend.Data.UnitOfWork
         IRepository<ApplicationUser> ApplicationUserRepository { get; }
         IRecipeRepository RecipeRepository { get; }
         IRepository<Ingredient> IngredientRepository { get; }
+        ICheckListRepository CheckListRepository { get; }
 
         void SaveChanges();
     }
