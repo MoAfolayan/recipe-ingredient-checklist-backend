@@ -17,6 +17,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;  
 using System.Text;  
 using recipe_ingredient_checklist_backend.Data;
+using recipe_ingredient_checklist_backend.Data.Repositories;
+using recipe_ingredient_checklist_backend.Data.UnitOfWork;
+using recipe_ingredient_checklist_backend.Services;
 
 namespace recipe_ingredient_checklist_backend
 {
@@ -32,7 +35,9 @@ namespace recipe_ingredient_checklist_backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             // For Entity Framework  
             services.AddDbContext<RecipeApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -64,6 +69,16 @@ namespace recipe_ingredient_checklist_backend
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))  
                 };  
             });
+
+            // Services
+            services.AddTransient<IApplicationUserService, ApplicationUserService>();
+            services.AddTransient<IRecipeService, RecipeService>();
+
+            // Repositories
+            services.AddTransient<IRepository<ApplicationUser>, ApplicationUserRepository>();
+            services.AddTransient<IRepository<Recipe>, RecipeRepository>();
+            services.AddTransient<IRepository<Ingredient>, IngredientRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

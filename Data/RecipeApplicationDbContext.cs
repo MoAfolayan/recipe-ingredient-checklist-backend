@@ -9,6 +9,10 @@ namespace recipe_ingredient_checklist_backend.Data
         {  
   
         }  
+
+        public virtual DbSet<Ingredient> Ingredient { get; set; }
+        public virtual DbSet<Recipe> Recipe { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)  
         {  
             base.OnModelCreating(builder);
