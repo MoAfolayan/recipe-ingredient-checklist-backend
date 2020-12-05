@@ -25,10 +25,10 @@ namespace recipe_ingredient_checklist_backend.Controllers
             _applicationUserService = applicationUserService;
         }
 
-        [HttpPost]
-        public ApplicationUser Post([FromBody] UsernameModel loginModel)
+        [HttpGet]
+        public ApplicationUser Get()
         {
-            return _applicationUserService.GetUserByUsername(loginModel.Username);
+            return _applicationUserService.GetUserByUsername(User.Identity.Name);
         }
     }
 }

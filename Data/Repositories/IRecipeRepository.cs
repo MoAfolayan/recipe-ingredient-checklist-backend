@@ -6,6 +6,6 @@ namespace recipe_ingredient_checklist_backend.Data.Repositories
 {
     public interface IRecipeRepository : IRepository<Recipe>
     {
-        List<Recipe> FindRecipeWithIngredients(string userId);
+        List<Recipe> FindRecipeWithIngredientsByUserId(string userId);
     }
 }

@@ -38,18 +38,11 @@ namespace recipe_ingredient_checklist_backend.Controllers
             var applicationUser = await _applicationUserManager.FindByNameAsync(model.Username);  
             if (applicationUser != null && await _applicationUserManager.CheckPasswordAsync(applicationUser, model.Password))  
             {  
-                var userRoles = await _applicationUserManager.GetRolesAsync(applicationUser);  
-  
                 var authClaims = new List<Claim>  
                 {  
                     new Claim(ClaimTypes.Name, applicationUser.UserName),  
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),  
                 };  
-  
-                foreach (var userRole in userRoles)  
-                {  
-                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));  
-                }  
   
                 var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));  
   

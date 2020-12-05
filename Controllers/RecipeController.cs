@@ -17,18 +17,22 @@ namespace recipe_ingredient_checklist_backend.Controllers
     {
         private readonly ILogger<RecipeController> _logger;
         private readonly IRecipeService _recipeService;
+        private readonly IApplicationUserService _applicationUserService;
 
-        public RecipeController(ILogger<RecipeController> logger, IRecipeService recipeService)
+        public RecipeController(ILogger<RecipeController> logger, 
+            IRecipeService recipeService,
+            IApplicationUserService applicationUserService)
         {
             _logger = logger;
             _recipeService = recipeService;
+            _applicationUserService = applicationUserService;
         }
 
         [HttpGet]
-        [Route("{userId}")]
-        public List<Recipe> Get(string userId)
+        public List<Recipe> Get()
         {
-            return _recipeService.FindRecipeWithIngredients(userId);
+            var applicationUser = _applicationUserService.GetUserByUsername(User.Identity.Name);
+            return _recipeService.FindRecipeWithIngredientsByUserId(applicationUser.Id);
         }
     }
 }

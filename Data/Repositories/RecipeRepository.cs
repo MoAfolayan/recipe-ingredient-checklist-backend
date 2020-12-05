@@ -12,7 +12,7 @@ namespace recipe_ingredient_checklist_backend.Data.Repositories
         {
         }
 
-        public List<Recipe> FindRecipeWithIngredients(string userId)
+        public List<Recipe> FindRecipeWithIngredientsByUserId(string userId)
         {
             return _context.Recipe.Where(recipe => recipe.ApplicationUserId == userId)
                 .Include(recipe => recipe.RecipeIngredients)
