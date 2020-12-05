@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace recipe_ingredient_checklist_backend.Data.Models
+namespace recipe_ingredient_checklist_backend.Data
 {
     public partial class Ingredient
     {
-        public Ingredient()
-        {
-            Recipe = new HashSet<Recipe>();
-        }
-
+        [Required]
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public virtual ICollection<Recipe> Recipe { get; set; }
+        public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
     }
 }
