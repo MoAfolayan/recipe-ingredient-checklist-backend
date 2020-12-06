@@ -81,6 +81,7 @@ namespace recipe_ingredient_checklist_backend
             services.AddTransient<IApplicationUserService, ApplicationUserService>();
             services.AddTransient<IRecipeService, RecipeService>();
             services.AddTransient<ICheckListService, CheckListService>();
+            services.AddTransient<ICheckListItemService, CheckListItemService>();
 
             // Repositories
             services.AddTransient<IRepository<ApplicationUser>, ApplicationUserRepository>();

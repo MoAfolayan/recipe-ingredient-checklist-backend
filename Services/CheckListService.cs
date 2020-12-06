@@ -29,9 +29,8 @@ namespace recipe_ingredient_checklist_backend.Services
             {
                 checkList.IsActive = false;
                 _unitOfWork.CheckListRepository.Update(checkList);
-                _unitOfWork.SaveChanges();
-
-                result = true;
+                var numberOfStateEntriesWrittenToDB = _unitOfWork.SaveChanges();
+                result = numberOfStateEntriesWrittenToDB > 0 ? true : false;
             }
             return result;
         }
@@ -39,8 +38,15 @@ namespace recipe_ingredient_checklist_backend.Services
         public CheckList Add(CheckList checkList)
         {
             var result = _unitOfWork.CheckListRepository.Add(checkList);
-            _unitOfWork.SaveChanges();
-            return result;
+            var numberOfStateEntriesWrittenToDB = _unitOfWork.SaveChanges();
+            if (numberOfStateEntriesWrittenToDB > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return null;
+            }     
         }
     }
 }

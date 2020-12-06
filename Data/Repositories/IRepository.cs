@@ -11,6 +11,6 @@ namespace recipe_ingredient_checklist_backend.Data.Repositories
         T Find(string id);
         IEnumerable<T> All();
         IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
-        void SaveChanges();
+        int SaveChanges();
     }
 }

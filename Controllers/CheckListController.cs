@@ -19,11 +19,15 @@ namespace recipe_ingredient_checklist_backend.Controllers
     {
         private readonly ILogger<CheckListController> _logger;
         private readonly ICheckListService _checkListService;
+        private readonly ICheckListItemService _checkListItemService;
+
         public CheckListController(ILogger<CheckListController> logger,
-            ICheckListService checkListService)
+            ICheckListService checkListService,
+            ICheckListItemService checkListItemService)
         {
             _logger = logger;
             _checkListService = checkListService;
+            _checkListItemService = checkListItemService;
         }
 
         [HttpGet]
@@ -33,14 +37,18 @@ namespace recipe_ingredient_checklist_backend.Controllers
             return _checkListService.FindActiveCheckListWithCheckListItems(recipeId);
         }
 
-        [HttpGet]
-        [Route("deactivate/{checkListId}")]
-        public IActionResult Deactivate(int checkListId)
+        [HttpPost]
+        [Route("deactivate")]
+        public IActionResult Deactivate(CheckList checkList)
         {
-            var result = _checkListService.Deactivate(checkListId);
+            var result = _checkListService.Deactivate(checkList.Id);
             if (result)
             {
-                return Ok();
+                return Ok(new  
+                {
+                    checkListId = checkList.Id,
+                    deactivated = result
+                });  
             }
             else
             {
@@ -52,6 +60,13 @@ namespace recipe_ingredient_checklist_backend.Controllers
         public CheckList Put(CheckList checkList)
         {
             return _checkListService.Add(checkList);
+        }
+
+        [HttpPost]
+        [Route("togglechecklistitem")]
+        public CheckListItem UpdateCheckListItem(CheckListItem checkListItem)
+        {
+            return _checkListItemService.ToggleChecked(checkListItem.Id);
         }
     }
 }

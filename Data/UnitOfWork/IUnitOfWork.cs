@@ -8,7 +8,8 @@ namespace recipe_ingredient_checklist_backend.Data.UnitOfWork
         IRecipeRepository RecipeRepository { get; }
         IRepository<Ingredient> IngredientRepository { get; }
         ICheckListRepository CheckListRepository { get; }
+        IRepository<CheckListItem> CheckListItemRepository { get; }
 
-        void SaveChanges();
+        int SaveChanges();
     }
 }

@@ -39,9 +39,9 @@ namespace recipe_ingredient_checklist_backend.Data.Repositories
             return _context.Update(entity).Entity;
         }
 
-        public void SaveChanges()
+        public int SaveChanges()
         {
-            _context.SaveChanges();
+            return _context.SaveChanges();
         }
     }
 }
