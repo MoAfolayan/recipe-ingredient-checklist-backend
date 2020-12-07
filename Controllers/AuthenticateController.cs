@@ -73,7 +73,8 @@ namespace recipe_ingredient_checklist_backend.Controllers
   
             ApplicationUser applicationUser = new ApplicationUser()  
             {  
-                Email = model.Email,  
+                Email = model.Email,
+                Name = model.Name,
                 SecurityStamp = Guid.NewGuid().ToString(),  
                 UserName = model.Username  
             };  
