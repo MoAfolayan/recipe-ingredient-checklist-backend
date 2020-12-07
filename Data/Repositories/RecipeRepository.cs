@@ -12,13 +12,13 @@ namespace recipe_ingredient_checklist_backend.Data.Repositories
         {
         }
 
-        public List<ApplicationUser> FindRecipeWithIngredientsByUserId(string userId)
+        public ApplicationUser FindRecipeWithIngredientsByUserId(string userId)
         {
             return _context.ApplicationUser.Where(applicationUser => applicationUser.Id == userId)
                 .Include(applicationUser => applicationUser.Recipes)
                 .ThenInclude(recipe => recipe.RecipeIngredients)
                 .ThenInclude(recipeIngredients => recipeIngredients.Ingredient)
-                .ToList();
+                .FirstOrDefault();
         }
     }
 }

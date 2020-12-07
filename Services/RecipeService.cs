@@ -16,7 +16,7 @@ namespace recipe_ingredient_checklist_backend.Services
             _unitOfWork = unitOfWork;
         }
 
-        public List<ApplicationUser> FindRecipeWithIngredientsByUserId(string userId)
+        public ApplicationUser FindRecipeWithIngredientsByUserId(string userId)
         {
             return _unitOfWork.RecipeRepository.FindRecipeWithIngredientsByUserId(userId);
         }
