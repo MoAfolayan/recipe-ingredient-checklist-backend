@@ -12,11 +12,20 @@ namespace recipe_ingredient_checklist_backend.Data.Repositories
         {
         }
 
-        public CheckList FindActiveCheckListWithCheckListItems(int recipeId)
+        public CheckList FindActiveCheckListWithCheckListItemsByRecipeId(int recipeId)
         {
             return _context.CheckList
                 .Where(checkList => checkList.RecipeId == recipeId)
                 .Where(checkList => checkList.IsActive == true)
+                .Include(checkList => checkList.CheckListItems)
+                .ThenInclude(checkListItem => checkListItem.Ingredient)
+                .FirstOrDefault();
+        }
+
+        public CheckList FindActiveCheckListWithCheckListItemsByCheckListId(int checkListId)
+        {
+            return _context.CheckList
+                .Where(checkList => checkList.Id == checkListId)
                 .Include(checkList => checkList.CheckListItems)
                 .ThenInclude(checkListItem => checkListItem.Ingredient)
                 .FirstOrDefault();

@@ -18,7 +18,7 @@ namespace recipe_ingredient_checklist_backend.Services
 
         public CheckList FindActiveCheckListWithCheckListItems(int recipeId)
         {
-            return _unitOfWork.CheckListRepository.FindActiveCheckListWithCheckListItems(recipeId);
+            return _unitOfWork.CheckListRepository.FindActiveCheckListWithCheckListItemsByRecipeId(recipeId);
         }
 
         public bool Deactivate(int checkListId)
@@ -37,16 +37,35 @@ namespace recipe_ingredient_checklist_backend.Services
 
         public CheckList Add(CheckList checkList)
         {
-            var result = _unitOfWork.CheckListRepository.Add(checkList);
+            var newCheckList = _unitOfWork.CheckListRepository.Add(checkList);
             var numberOfStateEntriesWrittenToDB = _unitOfWork.SaveChanges();
             if (numberOfStateEntriesWrittenToDB > 0)
             {
-                return result;
+                var recipe = _unitOfWork.RecipeRepository.FindRecipeWithIngredientsByRecipeId(newCheckList.RecipeId);
+                var success = true;
+                foreach (var recipeIngredient in recipe.RecipeIngredients)
+                {
+                    _unitOfWork.CheckListItemRepository.Add(new CheckListItem()
+                    {
+                        CheckListId = newCheckList.Id,
+                        IngredientId = recipeIngredient.Ingredient.Id
+                    });
+
+                    var secondNumberOfStateEntriesWrittenToDB = _unitOfWork.SaveChanges();
+                    if (secondNumberOfStateEntriesWrittenToDB == 0)
+                    {
+                        success = false;
+                    }
+                }
+
+                return success ? 
+                    _unitOfWork.CheckListRepository.FindActiveCheckListWithCheckListItemsByCheckListId(newCheckList.Id) :
+                    null;
             }
             else
             {
                 return null;
-            }     
+            }
         }
     }
 }
