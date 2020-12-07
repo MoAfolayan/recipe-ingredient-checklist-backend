@@ -63,10 +63,10 @@ namespace recipe_ingredient_checklist_backend.Controllers
         }
 
         [HttpPost]
-        [Route("togglechecklistitem")]
-        public CheckListItem UpdateCheckListItem(CheckListItem checkListItem)
+        [Route("updatechecklistitemstatus")]
+        public CheckListItem UpdateCheckListItemStatus(CheckListItem checkListItem)
         {
-            return _checkListItemService.ToggleChecked(checkListItem.Id);
+            return _checkListItemService.UpdateCheckListItemStatus(checkListItem);
         }
     }
 }

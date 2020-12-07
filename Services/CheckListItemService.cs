@@ -16,17 +16,17 @@ namespace recipe_ingredient_checklist_backend.Services
             _unitOfWork = unitOfWork;
         }
 
-        public CheckListItem ToggleChecked(int checkListItemId)
+        public CheckListItem UpdateCheckListItemStatus(CheckListItem checkListItem)
         {
-            var checkListItem = _unitOfWork.CheckListItemRepository
-                .Get(checkListItem => checkListItem.Id == checkListItemId)
+            var newCheckListItem = _unitOfWork.CheckListItemRepository
+                .Get(item => item.Id == checkListItem.Id)
                 .FirstOrDefault();
             
-            checkListItem.Checked = checkListItem.Checked ? false : true;
+            newCheckListItem.Checked = checkListItem.Checked;
             var numberOfStateEntriesWrittenToDB = _unitOfWork.SaveChanges();
             if (numberOfStateEntriesWrittenToDB > 0)
             {
-                return checkListItem;
+                return newCheckListItem;
             }
             else
             {

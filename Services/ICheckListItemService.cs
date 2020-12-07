@@ -8,6 +8,6 @@ namespace recipe_ingredient_checklist_backend.Services
 {
     public interface ICheckListItemService
     {
-        public CheckListItem ToggleChecked(int checkListItemId);
+        public CheckListItem UpdateCheckListItemStatus(CheckListItem checkListItem);
     }
 }
