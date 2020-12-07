@@ -17,6 +17,7 @@ namespace recipe_ingredient_checklist_backend.Data.Repositories
             return _context.CheckList
                 .Where(checkList => checkList.RecipeId == recipeId)
                 .Where(checkList => checkList.IsActive == true)
+                .OrderByDescending(x => x.Id)
                 .Include(checkList => checkList.CheckListItems)
                 .ThenInclude(checkListItem => checkListItem.Ingredient)
                 .FirstOrDefault();
