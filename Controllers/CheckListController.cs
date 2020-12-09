@@ -54,7 +54,7 @@ namespace recipe_ingredient_checklist_backend.Controllers
             {
                 return StatusCode
                 (
-                    StatusCodes.Status400BadRequest, 
+                    StatusCodes.Status404NotFound, 
                     new Response 
                     { 
                         Status = "Error", 
