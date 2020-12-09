@@ -13,6 +13,8 @@ using System.Security.Claims;
 using System.Text;  
 using recipe_ingredient_checklist_backend.Data; 
 using recipe_ingredient_checklist_backend.ViewModels;
+using recipe_ingredient_checklist_backend.Services;
+using recipe_ingredient_checklist_backend.Enums;
   
 namespace recipe_ingredient_checklist_backend.Controllers  
 {  
@@ -21,103 +23,87 @@ namespace recipe_ingredient_checklist_backend.Controllers
     public class AuthenticateController : ControllerBase  
     {
         private readonly ILogger<AuthenticateController> _logger;
-        private readonly UserManager<ApplicationUser> _applicationUserManager;  
-        private readonly IConfiguration _configuration;  
+        private readonly IApplicationUserService _applicationUserService;
   
         public AuthenticateController(ILogger<AuthenticateController> logger,
-            UserManager<ApplicationUser> applicationUserManager, 
-            RoleManager<IdentityRole> roleManager, IConfiguration configuration)  
+            IApplicationUserService applicationUserService)  
         {  
             _logger = logger;
-            _applicationUserManager = applicationUserManager;  
-            _configuration = configuration;  
+            _applicationUserService = applicationUserService;  
         }  
   
         [HttpPost]  
         [Route("login")]  
         public async Task<IActionResult> Login([FromBody] LoginModel model)  
         {  
-            var applicationUser = await _applicationUserManager.FindByNameAsync(model.Username);  
-            if (applicationUser != null && await _applicationUserManager.CheckPasswordAsync(applicationUser, model.Password))  
-            {  
-                var authClaims = new List<Claim>  
-                {  
-                    new Claim(ClaimTypes.Name, applicationUser.UserName),  
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),  
-                };  
-  
-                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));  
-  
-                var token = new JwtSecurityToken
-                (  
-                    issuer: _configuration["JWT:ValidIssuer"],  
-                    audience: _configuration["JWT:ValidAudience"],  
-                    expires: DateTime.Now.AddHours(3),  
-                    claims: authClaims,  
-                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                );  
-  
-                return Ok
-                (
-                    new  
-                    {  
-                        token = new JwtSecurityTokenHandler().WriteToken(token),  
-                        expiration = token.ValidTo  
-                    }
-                );
+            (bool success, TokenModel token) = await _applicationUserService.Login(model);
+            if (success)
+            {
+                return Ok(token);
             }
-
-            return Unauthorized();  
+            else
+            {
+                return Unauthorized();
+            }
         }  
   
         [HttpPost]  
         [Route("register")]  
         public async Task<IActionResult> Register([FromBody] RegisterModel model)  
         {
-            var userExists = await _applicationUserManager.FindByNameAsync(model.Username);  
-            if (userExists != null)
+            IActionResult result = null;
+            RegistrationOutcome registrationOutcome = await _applicationUserService.Register(model);
+            switch (registrationOutcome)
             {
-                return StatusCode
-                (
-                    StatusCodes.Status500InternalServerError, 
-                    new Response 
-                    { 
-                        Status = "Error", 
-                        Message = "User already exists!" 
-                    }
-                );  
-            }
-  
-            ApplicationUser applicationUser = new ApplicationUser()  
-            {  
-                Email = model.Email,
-                Name = model.Name,
-                SecurityStamp = Guid.NewGuid().ToString(),  
-                UserName = model.Username  
-            };
+                case RegistrationOutcome.Success:
+                    result = Ok
+                    (
+                        new Response 
+                        { 
+                            Status = "Success", 
+                            Message = "User created successfully!" 
+                        }
+                    );
+                    break;
 
-            var result = await _applicationUserManager.CreateAsync(applicationUser, model.Password);  
-            if (!result.Succeeded)
-            {
-                return StatusCode
-                (
-                    StatusCodes.Status500InternalServerError, 
-                    new Response 
-                    { 
-                        Status = "Error", 
-                        Message = "User creation failed! Please check user details and try again." 
-                    }
-                );
+                case RegistrationOutcome.UserExists:
+                    result = StatusCode
+                    (
+                        StatusCodes.Status406NotAcceptable, 
+                        new Response 
+                        { 
+                            Status = "Error", 
+                            Message = "User already exists!" 
+                        }
+                    );  
+                    break;
+
+                case RegistrationOutcome.Failure:
+                    result = StatusCode
+                    (
+                        StatusCodes.Status500InternalServerError, 
+                        new Response 
+                        { 
+                            Status = "Error", 
+                            Message = "User creation failed! Please check user details and try again." 
+                        }
+                    );
+                    break;
+                
+                default: 
+                    result = StatusCode
+                    (
+                        StatusCodes.Status500InternalServerError, 
+                        new Response 
+                        { 
+                            Status = "Error", 
+                            Message = "User creation failed! Please check user details and try again." 
+                        }
+                    );
+                    break;
             }
   
-            return Ok
-            (
-                new Response 
-                { 
-                    Status = "Success", 
-                    Message = "User created successfully!" 
-                }
-            );
+            return result;
         }
     }  
 } 

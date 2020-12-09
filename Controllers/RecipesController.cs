@@ -31,7 +31,7 @@ namespace recipe_ingredient_checklist_backend.Controllers
         [HttpGet]
         public ApplicationUser Get()
         {
-            var applicationUser = _applicationUserService.GetUserByUsername(User.Identity.Name);
+            var applicationUser = _applicationUserService.GetUserInfoByUsername(User.Identity.Name);
             return _recipeService.FindRecipeWithIngredientsByUserId(applicationUser.Id);
         }
     }

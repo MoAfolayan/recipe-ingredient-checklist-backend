@@ -29,7 +29,7 @@ namespace recipe_ingredient_checklist_backend.Controllers
         [HttpGet]
         public ApplicationUser Get()
         {
-            return _applicationUserService.GetUserByUsername(User.Identity.Name);
+            return _applicationUserService.GetUserInfoByUsername(User.Identity.Name);
         }
     }
 }
