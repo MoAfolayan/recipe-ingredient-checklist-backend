@@ -52,7 +52,15 @@ namespace recipe_ingredient_checklist_backend.Controllers
             }
             else
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = "CheckList Id does not exist!" }); 
+                return StatusCode
+                (
+                    StatusCodes.Status400BadRequest, 
+                    new Response 
+                    { 
+                        Status = "Error", 
+                        Message = "CheckList Id does not exist!" 
+                    }
+                );
             }
         }
 

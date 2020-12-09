@@ -19,7 +19,8 @@ namespace recipe_ingredient_checklist_backend.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly IApplicationUserService _applicationUserService;
 
-        public UserController(ILogger<UserController> logger, IApplicationUserService applicationUserService)
+        public UserController(ILogger<UserController> logger, 
+            IApplicationUserService applicationUserService)
         {
             _logger = logger;
             _applicationUserService = applicationUserService;
