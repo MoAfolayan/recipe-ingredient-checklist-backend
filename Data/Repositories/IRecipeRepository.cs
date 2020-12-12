@@ -8,5 +8,6 @@ namespace recipe_ingredient_checklist_backend.Data.Repositories
     {
         ApplicationUser FindRecipeWithIngredientsByUserId(string userId);
         Recipe FindRecipeWithIngredientsByRecipeId(int recipeId);
+        List<Recipe> FindRecipesByUserId(string userId);
     }
 }

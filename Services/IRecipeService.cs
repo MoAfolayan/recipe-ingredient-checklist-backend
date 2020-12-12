@@ -9,5 +9,6 @@ namespace recipe_ingredient_checklist_backend.Services
     public interface IRecipeService
     {
         ApplicationUser FindRecipeWithIngredientsByUserId(string userId);
+        List<Recipe> FindRecipesByUserId(string userId);
     }
 }

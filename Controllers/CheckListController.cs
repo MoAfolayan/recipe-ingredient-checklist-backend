@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;  
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 using recipe_ingredient_checklist_backend.Services;
 using recipe_ingredient_checklist_backend.Data;
 using recipe_ingredient_checklist_backend.ViewModels;
@@ -20,21 +21,54 @@ namespace recipe_ingredient_checklist_backend.Controllers
         private readonly ILogger<CheckListController> _logger;
         private readonly ICheckListService _checkListService;
         private readonly ICheckListItemService _checkListItemService;
+        private readonly IRecipeService _recipeService;
+        private readonly IApplicationUserService _applicationUserService;
 
         public CheckListController(ILogger<CheckListController> logger,
             ICheckListService checkListService,
-            ICheckListItemService checkListItemService)
+            ICheckListItemService checkListItemService,
+            IRecipeService recipeService,
+            IApplicationUserService applicationUserService)
         {
             _logger = logger;
             _checkListService = checkListService;
             _checkListItemService = checkListItemService;
+            _recipeService = recipeService;
+            _applicationUserService = applicationUserService;
         }
 
         [HttpGet]
         [Route("{recipeId}")]
-        public CheckList Get(int recipeId)
+        public IActionResult Get(int recipeId)
         {
-            return _checkListService.FindActiveCheckListWithCheckListItems(recipeId);
+            var applicationUser = _applicationUserService.GetUserInfoByUsername(User.Identity.Name);
+            var recipes = _recipeService.FindRecipesByUserId(applicationUser.Id);
+            bool recipeBelongsToUser = false;
+            foreach (var recipe in recipes)
+            {
+                if (recipe.Id == recipeId)
+                {
+                    recipeBelongsToUser = true;
+                }
+            }
+            if (recipeBelongsToUser)
+            {
+                var checklist = _checkListService.FindActiveCheckListWithCheckListItems(recipeId);
+                return Ok(checklist);  
+            }
+            else
+            {
+                return StatusCode
+                (
+                    StatusCodes.Status401Unauthorized,
+                    new Response
+                    {
+                        Status = "Error",
+                        Message = "Requested data does not belong to authenticated user"
+                    }
+                );
+            }
+            
         }
 
         [HttpPost]
@@ -54,11 +88,11 @@ namespace recipe_ingredient_checklist_backend.Controllers
             {
                 return StatusCode
                 (
-                    StatusCodes.Status404NotFound, 
-                    new Response 
-                    { 
-                        Status = "Error", 
-                        Message = "CheckList Id does not exist!" 
+                    StatusCodes.Status404NotFound,
+                    new Response
+                    {
+                        Status = "Error",
+                        Message = "CheckList Id does not exist!"
                     }
                 );
             }

@@ -20,5 +20,10 @@ namespace recipe_ingredient_checklist_backend.Services
         {
             return _unitOfWork.RecipeRepository.FindRecipeWithIngredientsByUserId(userId);
         }
+
+        public List<Recipe> FindRecipesByUserId(string userId)
+        {
+            return _unitOfWork.RecipeRepository.FindRecipesByUserId(userId);
+        }
     }
 }

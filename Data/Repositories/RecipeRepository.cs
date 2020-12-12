@@ -28,5 +28,11 @@ namespace recipe_ingredient_checklist_backend.Data.Repositories
                 .ThenInclude(recipeIngredients => recipeIngredients.Ingredient)
                 .FirstOrDefault();
         }
+
+        public List<Recipe> FindRecipesByUserId(string userId)
+        {
+            return _context.Recipe.Where(recipe => recipe.ApplicationUserId == userId)
+                .ToList();
+        }
     }
 }
